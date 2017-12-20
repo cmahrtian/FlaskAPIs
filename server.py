@@ -26,18 +26,18 @@ password = getenv('MSSQL_PASS')
 db = getenv('MSSQL_DB')
 
 conn = pymssql.connect(server, user, password, db)
-cursor = conn.cursor()
+cursor = conn.cursor(as_dict=True)
 
 class Teachers(Resource):
 	def get(self):
 		# perform query, return JSON result
 		cursor.execute(getenv('TEACHERS_QUERY'))
-		return cursor.fetchall()
+		return jsonify(cursor.fetchall())
 
 class Schools(Resource):
 	def get(self):
 		cursor.execute(getenv('SCHOOLS_QUERY'))
-		return cursor.fetchall()
+		return jsonify(cursor.fetchall())
 
 # routes
 api.add_resource(Teachers, '/teachers')
