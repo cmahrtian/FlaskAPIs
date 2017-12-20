@@ -1,7 +1,9 @@
 # custom packages
 import os
+from os import getenv
 import pymssql
 from dotenv import load_dotenv
+import collections
 
 # from Agarwal Python REST tutorial
 from flask import Flask, request
@@ -18,20 +20,28 @@ api = Api(app)
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
-db_uri_string = 'mssql+pymssql://' + os.getenv('MSSQL_USER') +':'+ os.getenv('MSSQL_PASS') +'@'+ os.getenv('MSSQL_SERVER') +':'+ os.getenv('MSSQL_PORT') +'/'+ os.getenv('MSSQL_DB')
-db_connect = create_engine(db_uri_string)
+server = getenv('MSSQL_SERVER')
+user = getenv('MSSQL_USER')
+password = getenv('MSSQL_PASS')
+db = getenv('MSSQL_DB')
+
+conn = pymssql.connect(server, user, password, db)
+cursor = conn.cursor()
 
 class Teachers(Resource):
 	def get(self):
-		# connect to database
-		conn = db_connect.connect()
 		# perform query, return JSON result
-		query = conn.execute("select Top 100 EmployeeID, LastName, FirstName from GEX_RBAC")
-		result =  {'teachers': [dict(zip(tuple (query.keys()), i)) for i in query.cursor]}
-		return jsonify(result)
+		cursor.execute(getenv('TEACHERS_QUERY'))
+		return cursor.fetchall()
+
+class Schools(Resource):
+	def get(self):
+		cursor.execute(getenv('SCHOOLS_QUERY'))
+		return cursor.fetchall()
 
 # routes
 api.add_resource(Teachers, '/teachers')
+api.add_resource(Schools, '/schools')
 
 if __name__ == '__main__':
 	app.run(port=5002)
