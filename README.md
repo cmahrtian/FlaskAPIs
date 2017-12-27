@@ -5,13 +5,13 @@
 2. Type **source venv/bin/activate** (or **source venv/scripts/activate**) to run the program in the aforementioned virtual environment.
 
 3. Run **pip install** for the following packages:
-&nbsp;&nbsp;* flask
-&nbsp;&nbsp;* flask-cors
-&nbsp;&nbsp;* flask-jsonpify
-&nbsp;&nbsp;* flask-restful
-&nbsp;&nbsp;* flask-sqlalchemy
-&nbsp;&nbsp;* pymssql
-&nbsp;&nbsp;* python-dotenv
+* flask
+* flask-cors
+* flask-jsonpify
+* flask-restful
+* flask-sqlalchemy
+* pymssql
+* python-dotenv
 
 4. Run **pip freeze** so that the virtual environment remembers which packages to use moving forward.
 
