@@ -5,16 +5,16 @@ import pymssql
 from dotenv import load_dotenv
 import collections
 
-# from Agarwal Python REST tutorial
+# 1-3 = from Agarwal Python REST tutorial
 from flask import Flask, request
 from flask_restful import Resource, Api
-from sqlalchemy import create_engine
-from json import dumps
 from flask_jsonpify import jsonify
+from flask_cors import CORS
 
-# from Agarwal Python REST tutorial
+# 1-2 = from Agarwal Python REST tutorial
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 # custom DB connection
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -39,9 +39,15 @@ class Schools(Resource):
 		cursor.execute(getenv('SCHOOLS_QUERY'))
 		return jsonify(cursor.fetchall())
 
+class Students(Resource):
+	def get(self):
+		cursor.execute(getenv('STUDENTS_QUERY'))
+		return jsonify(cursor.fetchall())
+
 # routes
 api.add_resource(Teachers, '/teachers')
 api.add_resource(Schools, '/schools')
+api.add_resource(Students, '/students')
 
 if __name__ == '__main__':
 	app.run(port=5002)
